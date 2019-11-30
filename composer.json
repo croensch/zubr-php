@@ -1,0 +1,5 @@
+{
+    "require": {
+        "zendframework/zend-diactoros": "^2.2"
+    }
+}
