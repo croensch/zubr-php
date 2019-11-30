@@ -5,7 +5,7 @@ require_once(__DIR__ . '/../vendor/autoload.php');
 class MyService
 {
     public function myOperation (int $in) : int {
-        throw new Exception('in', $in);
+        #throw new Exception('in', $in);
         return $in * 42;
     }
 }
@@ -24,6 +24,9 @@ $psrServerRequest = $psrServerRequest->withBody(
     (new Zend\Diactoros\StreamFactory)->createStream($requestBodyJSON)
 );
 
+/**
+ * @throw \Exception
+ */
 function middlewareD (Psr\Http\Message\ServerRequestInterface $serverRequest) : Psr\Http\Message\ResponseInterface {
     $request = Zubr\ServerRequest::fromServerRequest($serverRequest);
     $serviceName = $request->getServiceName();

@@ -17,15 +17,25 @@ class HttpServerResponse extends ServerResponse
     protected $httpStatusCode;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $httpReasonPhrase;
 
-    public function __construct(Request $request, int $httpStatusCode = null, string $httpReasonPhrase = null)
+    public function __construct(Request $request, int $statusCode, string $reasonPhrase = null)
     {
         parent::__construct($request);
-        $this->httpStatusCode = $httpStatusCode;
-        $this->httpReasonPhrase = $httpReasonPhrase;
+        $this->httpStatusCode = $statusCode;
+        $this->httpReasonPhrase = $reasonPhrase;
+    }
+
+    public function getStatusCode() : int
+    {
+        return $this->httpStatusCode;
+    }
+
+    public function getReasonPhrase() : ?string
+    {
+        return $this->httpReasonPhrase;
     }
 
     /**
@@ -37,7 +47,9 @@ class HttpServerResponse extends ServerResponse
         $operationName = $this->getRequest()->getOperationName();
         $operationResponseKey = "${operationName}Response";
         $data[$operationResponseKey]['statusCode'] = $this->httpStatusCode;
-        $data[$operationResponseKey]['reasonPhrase'] = $this->httpReasonPhrase;
+        if ($this->httpReasonPhrase !== null) {
+            $data[$operationResponseKey]['reasonPhrase'] = $this->httpReasonPhrase;
+        }
         return $data;
     }
 }

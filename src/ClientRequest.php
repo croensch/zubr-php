@@ -15,17 +15,23 @@ class ClientRequest extends Request
         return $data;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function toClientRequest() : RequestInterface
     {
         $data = $this->getData();
-        // todo: JSON
+        // TODO: JSON
         $requestBody = json_encode($data);
-        // todo: Diactoros
+        if ($requestBody === false) {
+            throw new \Exception('Invalid data');
+        }
+        // TODO: Diactoros
         $request = new \Zend\Diactoros\Request();
         $request->withMethod('POST');
-        // @todo: serviceName
+        // TODO serviceName
         $serviceName = $this->getServiceName();
-        // todo: Diactoros
+        // TODO: Diactoros
         $request->withUri(
             (new \Zend\Diactoros\UriFactory)->createUri("/$serviceName"));
         $request->withBody(

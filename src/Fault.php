@@ -24,7 +24,7 @@ class Fault
         return $this->message;
     }
 
-    public function getDetail() : object
+    public function getDetail() : ?object
     {
         return $this->detail;
     }

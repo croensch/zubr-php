@@ -26,12 +26,18 @@ class ServerResponse extends Response
         return $data;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function toServerResponse() : ResponseInterface
     {
         $data = $this->getData();
-        // @todo: JSON
+        // TODO JSON
         $responseBody = json_encode($data);
-        // @todo: Diactoros
+        if ($responseBody === false) {
+            throw new \Exception('Invalid JSON');
+        }
+        // TODO Diactoros
         $response = new \Zend\Diactoros\Response();
         $response = $response->withBody(
             (new \Zend\Diactoros\StreamFactory)->createStream($responseBody)

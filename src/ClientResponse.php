@@ -10,7 +10,7 @@ class ClientResponse extends Response
     {
         $response = new static($request);
         $responseBody = (string) $clientResponse->getBody();
-        // @todo: JSON
+        // TODO JSON
         $data = json_decode($responseBody);
         $fault = null;
         $result = null;
@@ -22,7 +22,10 @@ class ClientResponse extends Response
                 $fault = new Fault($dataFault->message);
             }
         } else {
-            $result = $data->result;
+            $operationName = $request->getOperationName();
+            $operationResponseProperty = "${operationName}Response";
+            $operationResultProperty = "${operationName}Result";
+            $result = $data->$operationResponseProperty->$operationResultProperty;
         }
         if ($fault) {
             $response->setFault($fault);

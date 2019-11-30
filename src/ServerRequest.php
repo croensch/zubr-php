@@ -25,9 +25,9 @@ class ServerRequest extends Request
     public static function fromServerRequest(RequestInterface $serverRequest) : self
     {
         $requestBody = (string) $serverRequest->getBody();
-        // @todo: JSON
+        // TODO JSON
         $data = json_decode($requestBody, true);
-        // @todo: serviceName
+        // TODO serviceName
         $serviceName = preg_filter('/^\/(.*?)$/', '$1', $serverRequest->getUri()->getPath());
         $operationRequestKey = key($data);
         $operationName = preg_filter('/^(.*?)Request$/', '$1', $operationRequestKey);
