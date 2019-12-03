@@ -30,7 +30,7 @@ class Response extends Zubr\Response
     /**
      * @throws \Exception
      */
-    public function toServerResponse() : ResponseInterface
+    public function toPsrResponse() : ResponseInterface
     {
         $data = $this->getData();
         // TODO JSON
@@ -39,10 +39,10 @@ class Response extends Zubr\Response
             throw new \Exception('Invalid JSON');
         }
         // TODO Diactoros
-        $response = new \Zend\Diactoros\Response();
-        $response = $response->withBody(
+        $psrResponse = new \Zend\Diactoros\Response();
+        $psrResponse = $psrResponse->withBody(
             (new \Zend\Diactoros\StreamFactory)->createStream($responseBody)
         );
-        return $response;
+        return $psrResponse;
     }
 }

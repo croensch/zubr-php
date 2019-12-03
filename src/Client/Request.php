@@ -19,7 +19,7 @@ class Request extends Zubr\Request
     /**
      * @throws \Exception
      */
-    public function toClientRequest() : RequestInterface
+    public function toPsrRequest() : RequestInterface
     {
         $data = $this->getData();
         // TODO: JSON
@@ -28,16 +28,16 @@ class Request extends Zubr\Request
             throw new \Exception('Invalid data');
         }
         // TODO: Diactoros
-        $request = new \Zend\Diactoros\Request();
-        $request = $request->withMethod('POST');
+        $psrRequest = new \Zend\Diactoros\Request();
+        $psrRequest = $psrRequest->withMethod('POST');
         // TODO serviceName
         $serviceName = $this->getServiceName();
         // TODO: Diactoros
-        $request = $request->withUri(
+        $psrRequest = $psrRequest->withUri(
             (new \Zend\Diactoros\UriFactory)->createUri("/$serviceName"));
-        $request = $request->withBody(
+        $psrRequest = $psrRequest->withBody(
             (new \Zend\Diactoros\StreamFactory)->createStream($requestBody)
         );
-        return $request;
+        return $psrRequest;
     }
 }

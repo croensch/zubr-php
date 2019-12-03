@@ -4,6 +4,7 @@ namespace Zubr\Server;
 
 use Zubr;
 use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class Request extends Zubr\Request
 {
@@ -20,20 +21,23 @@ class Request extends Zubr\Request
      */
     const ATTR_PARAMETERS_NAMED = 'parametersNamed';
 
-    /**
-     * @return ServerRequest
-     */
-    public static function fromServerRequest(RequestInterface $serverRequest) : self
+    public static function fromPsrRequest(RequestInterface $psrRequest) : self
     {
-        $requestBody = (string) $serverRequest->getBody();
+        $requestBody = (string) $psrRequest->getBody();
         // TODO JSON
         $data = json_decode($requestBody, true);
         // TODO serviceName
-        $serviceName = preg_filter('/^\/(.*?)$/', '$1', $serverRequest->getUri()->getPath());
+        $serviceName = preg_filter('/^\/(.*?)$/', '$1', $psrRequest->getUri()->getPath());
         $operationRequestKey = key($data);
         $operationName = preg_filter('/^(.*?)Request$/', '$1', $operationRequestKey);
         $parametersNamed = $data[$operationRequestKey];
-        $request = new static($serviceName, $operationName, $parametersNamed);
-        return $request;
+        $serverRequest = new static($serviceName, $operationName, $parametersNamed);
+        return $serverRequest;
+    }
+
+    public static function fromPsrServerRequest(ServerRequestInterface $psrServerRequest) : self
+    {
+        $serverRequest = static::fromPsrRequest($psrServerRequest);
+        return $serverRequest;
     }
 }

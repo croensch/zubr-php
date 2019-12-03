@@ -7,10 +7,10 @@ use Psr\Http\Message\ResponseInterface;
 
 class Response extends Zubr\Response
 {
-    public static function fromClientResponse(Zubr\Request $request, ResponseInterface $clientResponse) : self
+    public static function fromPsrResponse(Zubr\Request $request, ResponseInterface $psrResponse) : self
     {
-        $response = new static($request);
-        $responseBody = (string) $clientResponse->getBody();
+        $clientResponse = new static($request);
+        $responseBody = (string) $psrResponse->getBody();
         // TODO JSON
         $data = json_decode($responseBody);
         $fault = null;
@@ -29,10 +29,10 @@ class Response extends Zubr\Response
             $result = $data->$operationResponseProperty->$operationResultProperty;
         }
         if ($fault) {
-            $response->setFault($fault);
+            $clientResponse->setFault($fault);
         } else {
-            $response->setResult($result);
+            $clientResponse->setResult($result);
         }
-        return $response;
+        return $clientResponse;
     }
 }

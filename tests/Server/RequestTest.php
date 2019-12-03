@@ -9,9 +9,9 @@ class RequestTest extends \PHPUnit\Framework\TestCase
     public function testFromServerRequest()
     {
         $clientRequest = new Zubr\Client\Request('s', 'o', ['p' => null]);
-        $request = Zubr\Server\Request::fromServerRequest($clientRequest->toClientRequest());
-        $this->assertSame('s', $request->getServiceName());
-        $this->assertSame('o', $request->getOperationName());
-        $this->assertSame(['p' => null], $request->getParametersNamed());
+        $serverRequest = Zubr\Server\Request::fromPsrRequest($clientRequest->toPsrRequest());
+        $this->assertSame('s', $serverRequest->getServiceName());
+        $this->assertSame('o', $serverRequest->getOperationName());
+        $this->assertSame(['p' => null], $serverRequest->getParametersNamed());
     }
 }

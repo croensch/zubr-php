@@ -6,11 +6,11 @@ use Zubr;
 
 class ResponseTest extends \PHPUnit\Framework\TestCase
 {
-    public function testToServerResponse()
+    public function testToPsrResponse()
     {
-        $request = new Zubr\Server\Request('s', 'o', ['p' => null]);
-        $response = new Zubr\Server\Response($request);
-        $serverResponse = $response->toServerResponse();
-        $this->assertEquals('{"oResponse":{"oResult":null}}', (string) $serverResponse->getBody());
+        $request = new Zubr\Request('s', 'o', ['p' => null]);
+        $serverResponse = new Zubr\Server\Response($request);
+        $psrResponse = $serverResponse->toPsrResponse();
+        $this->assertEquals('{"oResponse":{"oResult":null}}', (string) $psrResponse->getBody());
     }
 }

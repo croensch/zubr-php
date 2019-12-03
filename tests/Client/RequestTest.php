@@ -6,13 +6,13 @@ use Zubr;
 
 class RequestTest extends \PHPUnit\Framework\TestCase
 {
-    public function testToClientRequest()
+    public function testToPsrRequest()
     {
-        $request = new Zubr\Client\Request('s', 'o', ['p' => null]);
-        $clientRequest = $request->toClientRequest();
-        $this->assertSame('POST', $clientRequest->getMethod());
-        $this->assertSame('/s', (string) $clientRequest->getUri());
+        $clientRequest = new Zubr\Client\Request('s', 'o', ['p' => null]);
+        $psrRequest = $clientRequest->toPsrRequest();
+        $this->assertSame('POST', $psrRequest->getMethod());
+        $this->assertSame('/s', (string) $psrRequest->getUri());
         // TODO: JSON
-        $this->assertSame('{"oRequest":{"p":null}}', (string) $clientRequest->getBody());
+        $this->assertSame('{"oRequest":{"p":null}}', (string) $psrRequest->getBody());
     }
 }
