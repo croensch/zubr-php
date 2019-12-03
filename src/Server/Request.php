@@ -1,10 +1,11 @@
 <?php
 
-namespace Zubr;
+namespace Zubr\Server;
 
+use Zubr;
 use Psr\Http\Message\RequestInterface;
 
-class ServerRequest extends Request
+class Request extends Zubr\Request
 {
     /**
      * @deprecated

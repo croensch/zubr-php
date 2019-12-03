@@ -1,10 +1,11 @@
 <?php
 
-namespace Zubr;
+namespace Zubr\Client;
 
+use Zubr;
 use Psr\Http\Message\RequestInterface;
 
-class ClientRequest extends Request
+class Request extends Zubr\Request
 {
     protected function getData() : array
     {
@@ -28,13 +29,13 @@ class ClientRequest extends Request
         }
         // TODO: Diactoros
         $request = new \Zend\Diactoros\Request();
-        $request->withMethod('POST');
+        $request = $request->withMethod('POST');
         // TODO serviceName
         $serviceName = $this->getServiceName();
         // TODO: Diactoros
-        $request->withUri(
+        $request = $request->withUri(
             (new \Zend\Diactoros\UriFactory)->createUri("/$serviceName"));
-        $request->withBody(
+        $request = $request->withBody(
             (new \Zend\Diactoros\StreamFactory)->createStream($requestBody)
         );
         return $request;

@@ -1,12 +1,13 @@
 <?php
 
-namespace Zubr;
+namespace Zubr\Client;
 
+use Zubr;
 use Psr\Http\Message\ResponseInterface;
 
-class ClientResponse extends Response
+class Response extends Zubr\Response
 {
-    public static function fromClientResponse(Request $request, ResponseInterface $clientResponse) : self
+    public static function fromClientResponse(Zubr\Request $request, ResponseInterface $clientResponse) : self
     {
         $response = new static($request);
         $responseBody = (string) $clientResponse->getBody();
@@ -17,9 +18,9 @@ class ClientResponse extends Response
         if (isset($data->Fault)) {
             $dataFault = $data->Fault;
             if (isset($dataFault->code)) {
-                $fault = new PhpFault($dataFault->message, $dataFault->code);
+                $fault = new Zubr\PhpFault($dataFault->message, $dataFault->code);
             } else {
-                $fault = new Fault($dataFault->message);
+                $fault = new Zubr\Fault($dataFault->message);
             }
         } else {
             $operationName = $request->getOperationName();

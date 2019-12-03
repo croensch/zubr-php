@@ -1,10 +1,11 @@
 <?php
 
-namespace Zubr;
+namespace Zubr\Server;
 
+use Zubr;
 use Psr\Http\Message\ResponseInterface;
 
-class ServerResponse extends Response
+class Response extends Zubr\Response
 {
     protected function getData() : array
     {
