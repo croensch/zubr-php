@@ -27,8 +27,8 @@ $psrServerRequest = $psrServerRequest->withBody(
 /**
  * @throw \Exception
  */
-function middlewareD (Psr\Http\Message\ServerRequestInterface $serverRequest) : Psr\Http\Message\ResponseInterface {
-    $request = Zubr\ServerRequest::fromServerRequest($serverRequest);
+function middlewareD (Psr\Http\Message\ServerRequestInterface $psrRequest) : Psr\Http\Message\ResponseInterface {
+    $request = Zubr\Server\Request::fromPsrRequest($psrRequest);
     $serviceName = $request->getServiceName();
     $serviceServer = new Zubr\ServiceServer($serviceName); 
     $operationName = $request->getOperationName();
@@ -44,13 +44,13 @@ function middlewareD (Psr\Http\Message\ServerRequestInterface $serverRequest) : 
         }
     }
     if ($fault) {
-        $httpResponse = new Zubr\HttpServerResponse($request, Zubr\HttpServerResponse::STATUS_CODE_I_S_E, Zubr\HttpServerResponse::REASON_PHRASE_I_S_E);
+        $httpResponse = new Zubr\Server\HttpResponse($request, Zubr\Server\HttpResponse::STATUS_CODE_I_S_E, Zubr\Server\HttpResponse::REASON_PHRASE_I_S_E);
         $httpResponse->setFault($fault);
     } else {
-        $httpResponse = new Zubr\HttpServerResponse($request, Zubr\HttpServerResponse::STATUS_CODE_OK, Zubr\HttpServerResponse::REASON_PHRASE_OK);
+        $httpResponse = new Zubr\Server\HttpResponse($request, Zubr\Server\HttpResponse::STATUS_CODE_OK, Zubr\Server\HttpResponse::REASON_PHRASE_OK);
         $httpResponse->setResult($result);
     }
-    $serverResponse = $httpResponse->toServerResponse();
+    $serverResponse = $httpResponse->toPsrResponse();
     return $serverResponse;
 }
 

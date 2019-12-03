@@ -23,12 +23,12 @@ abstract class AbstractServiceClient
      */
     protected function _call($serviceName, $operationName, $parametersNamed)
     {
-        $request = new ClientRequest($serviceName, $operationName, $parametersNamed);
-        $clientRequest = $request->toClientRequest();
+        $request = new Client\Request($serviceName, $operationName, $parametersNamed);
+        $psrRequest = $request->toPsrRequest();
         // TODO Guzzle
         $httpClient = $this->context->getHttpClient();
-        $clientResponse = $httpClient->sendRequest($clientRequest);
-        $response = ClientResponse::fromClientResponse($request, $clientResponse);
+        $psrResponse = $httpClient->sendRequest($psrRequest);
+        $response = Client\Response::fromPsrResponse($request, $psrResponse);
         if ($fault = $response->getFault()) {
             if ($fault instanceof PhpFault) {
                 throw new \Exception($fault->getMessage(), $fault->getCode());

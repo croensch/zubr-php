@@ -1,8 +1,8 @@
 <?php
 
-namespace Zubr;
+namespace Zubr\Server;
 
-class HttpServerResponse extends ServerResponse
+class HttpResponse extends Response
 {
     const STATUS_CODE_OK = 200;
     const STATUS_CODE_BAD_REQUEST = 400;
