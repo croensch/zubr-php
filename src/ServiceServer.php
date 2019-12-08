@@ -7,19 +7,20 @@ class ServiceServer
     /**
      * @var string
      */
-    protected $name;
+    protected $serviceName;
 
-    public function __construct(string $name)
+    public function __construct(string $serviceName)
     {
-        $this->name = $name;
+        $this->serviceName = $serviceName;
     }
 
     /**
-     * TODO parameters
+     * @return mixed
+     * @throws \Exception
      */
-    public function call($operationName, $parameters)
+    public function call(string $operationName, array $parameters)
     {
-        $serviceName = $this->name;
+        $serviceName = $this->serviceName;
         $serviceClassName = ucfirst($serviceName);
         $service = new $serviceClassName();
         $parametersPositional = array_values($parameters);

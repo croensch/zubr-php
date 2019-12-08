@@ -15,13 +15,10 @@ abstract class AbstractServiceClient
     }
 
     /**
-     * @param string $serviceName
-     * @param string $operationName
-     * @param array $parametersNamed
      * @return mixed
      * @throws \Exception
      */
-    protected function _call($serviceName, $operationName, $parametersNamed)
+    protected function _call(string $serviceName, string $operationName, array $parametersNamed)
     {
         $request = new Client\Request($serviceName, $operationName, $parametersNamed);
         $psrRequest = $request->toPsrRequest();

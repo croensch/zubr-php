@@ -9,13 +9,13 @@ class ServiceClient extends AbstractServiceClient
      */
     protected $serviceName;
 
-    public function __construct(ServiceClientContext $context, $serviceName)
+    public function __construct(ServiceClientContext $context, string $serviceName)
     {
         parent::__construct($context);
         $this->serviceName = $serviceName;
     }
 
-    public static function create(string $serviceName, $context = null) : self
+    public static function create(string $serviceName, ServiceClientContext $context = null) : self
     {
         if ($context === null) {
             $context = ServiceClientContext::createDefault();
@@ -24,11 +24,10 @@ class ServiceClient extends AbstractServiceClient
     }
 
     /**
-     * @param string $operationName
-     * @param array $parametersPositional
      * @return mixed
+     * @throws \Exception
      */
-    public function __call($operationName, $parametersPositional)
+    public function __call(string $operationName, array $parametersPositional)
     {
         // TODO parameters
         $result = $this->_call($this->serviceName, $operationName, $parametersPositional);

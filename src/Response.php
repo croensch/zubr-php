@@ -15,12 +15,12 @@ class Response
     }
 
     /**
-     * @var Fault|null
+     * @var Fault
      */
     protected $fault;
 
     /**
-     * @pvar mixed|null
+     * @pvar mixed
      */
     protected $result;
 
