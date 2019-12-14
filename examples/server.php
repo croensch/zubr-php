@@ -1,5 +1,7 @@
 <?php
 
+use Zubr\ServiceServer;
+
 require_once(__DIR__ . '/../vendor/autoload.php');
 
 class MyService
@@ -24,6 +26,11 @@ $psrServerRequest = $psrServerRequest->withBody(
     (new Zend\Diactoros\StreamFactory)->createStream($requestBodyJSON)
 );
 
+$serviceServer = new ServiceServer();
+$serviceServer->serve($psrServerRequest);
+
+return;
+
 /**
  * @throw \Exception
  */
@@ -44,11 +51,11 @@ function middlewareD (Psr\Http\Message\ServerRequestInterface $psrRequest) : Psr
         }
     }
     if ($fault) {
-        $httpResponse = new Zubr\Server\HttpResponse($request, Zubr\Server\HttpResponse::STATUS_CODE_I_S_E, Zubr\Server\HttpResponse::REASON_PHRASE_I_S_E);
+        $httpResponse = new Zubr\Server\HttpResponse(/*$request, */Zubr\Server\HttpResponse::STATUS_CODE_I_S_E, Zubr\Server\HttpResponse::REASON_PHRASE_I_S_E);
         $httpResponse->setFault($fault);
     } else {
-        $httpResponse = new Zubr\Server\HttpResponse($request, Zubr\Server\HttpResponse::STATUS_CODE_OK, Zubr\Server\HttpResponse::REASON_PHRASE_OK);
-        $httpResponse->setResult($result);
+        $httpResponse = new Zubr\Server\HttpResponse(/*$request, */Zubr\Server\HttpResponse::STATUS_CODE_OK, Zubr\Server\HttpResponse::REASON_PHRASE_OK);
+        $httpResponse->setResult($result, $request);
     }
     $serverResponse = $httpResponse->toPsrResponse();
     return $serverResponse;

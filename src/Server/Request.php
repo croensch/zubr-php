@@ -21,11 +21,17 @@ class Request extends Zubr\Request
      */
     const ATTR_PARAMETERS_NAMED = 'parametersNamed';
 
+    /**
+     * @throws \Exception
+     */
     public static function fromPsrRequest(RequestInterface $psrRequest) : self
     {
         $requestBody = (string) $psrRequest->getBody();
         // TODO JSON
         $data = json_decode($requestBody, true);
+        if ($data === false) {
+            throw new \Exception('Invalid JSON');
+        }
         // TODO serviceName
         $serviceName = preg_filter('/^\/(.*?)$/', '$1', $psrRequest->getUri()->getPath());
         $operationRequestKey = key($data);

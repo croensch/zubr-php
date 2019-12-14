@@ -9,9 +9,9 @@ class Response
      */
     protected $request;
 
-    public function __construct(Request $request)
+    public function __construct(/*Request $request*/)
     {
-        $this->request = $request;
+        #$this->request = $request;
     }
 
     /**
@@ -24,7 +24,7 @@ class Response
      */
     protected $result;
 
-    public function getRequest() : Request
+    public function getRequest() : ?Request
     {
         return $this->request;
     }
@@ -51,9 +51,10 @@ class Response
     /**
      * @param mixed $result
      */
-    public function setResult($result)
+    public function setResult($result, Request $request)
     {
         $this->fault = null;
         $this->result = $result;
+        $this->request = $request;
     }
 }

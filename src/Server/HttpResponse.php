@@ -21,9 +21,9 @@ class HttpResponse extends Response
      */
     protected $httpReasonPhrase;
 
-    public function __construct(Request $request, int $statusCode, string $reasonPhrase = null)
+    public function __construct(/*Request $request, */int $statusCode, string $reasonPhrase = null)
     {
-        parent::__construct($request);
+        #parent::__construct($request);
         $this->httpStatusCode = $statusCode;
         $this->httpReasonPhrase = $reasonPhrase;
     }
@@ -44,11 +44,17 @@ class HttpResponse extends Response
     protected function getData() : array
     {
         $data = parent::getData();
-        $operationName = $this->getRequest()->getOperationName();
-        $operationResponseKey = "${operationName}Response";
-        $data[$operationResponseKey]['statusCode'] = $this->httpStatusCode;
-        if ($this->httpReasonPhrase !== null) {
-            $data[$operationResponseKey]['reasonPhrase'] = $this->httpReasonPhrase;
+        $fault = $this->getFault();
+        if ($fault === null) {
+            $operationName = $this->getRequest()->getOperationName();
+            $operationResponseKey = "${operationName}Response";
+            $data[$operationResponseKey]['statusCode'] = $this->httpStatusCode;
+            if ($this->httpReasonPhrase !== null) {
+                $data[$operationResponseKey]['reasonPhrase'] = $this->httpReasonPhrase;
+            }
+        } else {
+            $data['Fault']['statusCode'] = $this->httpStatusCode;
+            $data['Fault']['reasonPhrase'] = $this->httpReasonPhrase;
         }
         return $data;
     }

@@ -9,20 +9,21 @@ class Response extends Zubr\Response
 {
     protected function getData() : array
     {
-        $operationName = $this->getRequest()->getOperationName();
-        $operationResponseKey = "${operationName}Response";
-        $data = [$operationResponseKey => []];
-        if ($fault = $this->getFault()) {
-            $data[$operationResponseKey]['Fault'] = ['message' => $fault->getMessage()];
-            if ($faultDetail = $fault->getDetail()) {
-                $data[$operationResponseKey]['Fault']['Detail'] = $faultDetail;
-            }
-            if ($fault instanceof PhpFault) {
-                $data[$operationResponseKey]['Fault']['code'] = $fault->getCode();
-            }
-        } else {
+        $data = [];
+        $fault = $this->getFault();
+        if ($fault === null) {
+            $operationName = $this->getRequest()->getOperationName();
+            $operationResponseKey = "${operationName}Response";
             $operationResultKey = "${operationName}Result";
-            $data[$operationResponseKey][$operationResultKey] = $this->result; 
+            $data[$operationResponseKey][$operationResultKey] = $this->getResult();
+        } else {
+            $data['Fault'] = ['message' => $fault->getMessage()];
+            if ($faultDetail = $fault->getDetail()) {
+                $data['Fault']['Detail'] = $faultDetail;
+            }
+            if ($fault instanceof Zubr\PhpFault) {
+                $data['Fault']['code'] = $fault->getCode();
+            }
         }
         return $data;
     }
@@ -30,16 +31,18 @@ class Response extends Zubr\Response
     /**
      * @throws \Exception
      */
-    public function toPsrResponse() : ResponseInterface
+    public function toPsrResponse(ResponseInterface $psrResponse = null) : ResponseInterface
     {
         $data = $this->getData();
         // TODO JSON
         $responseBody = json_encode($data);
         if ($responseBody === false) {
-            throw new \Exception('Invalid JSON');
+            throw new \Exception('Invalid data');
         }
         // TODO Diactoros
-        $psrResponse = new \Zend\Diactoros\Response();
+        if ($psrResponse === null) {
+            $psrResponse = new \Zend\Diactoros\Response();
+        }
         $psrResponse = $psrResponse->withBody(
             (new \Zend\Diactoros\StreamFactory)->createStream($responseBody)
         );
