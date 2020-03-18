@@ -5,13 +5,34 @@ namespace Zubr;
 class Response
 {
     /**
+     * @var string
+     */
+    protected $serviceName;
+
+    /**
+     * @var string
+     */
+    protected $operationName;
+
+    /**
      * @var Request
      */
     protected $request;
 
-    public function __construct(/*Request $request*/)
+    public function __construct(string $serviceName, string $operatioName)
     {
-        #$this->request = $request;
+        $this->serviceName = $serviceName;
+        $this->operationName = $operatioName;
+    }
+
+    public function getServiceName() : string
+    {
+        return $this->serviceName;
+    }
+
+    public function getOperationName() : string
+    {
+        return $this->operationName;
     }
 
     /**
@@ -24,10 +45,10 @@ class Response
      */
     protected $result;
 
-    public function getRequest() : ?Request
+    /*public function getRequest() : ?Request
     {
         return $this->request;
-    }
+    }*/
 
     public function getFault() : ?Fault
     {
@@ -51,10 +72,9 @@ class Response
     /**
      * @param mixed $result
      */
-    public function setResult($result, Request $request)
+    public function setResult($result)
     {
         $this->fault = null;
         $this->result = $result;
-        $this->request = $request;
     }
 }

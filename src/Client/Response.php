@@ -9,7 +9,7 @@ class Response extends Zubr\Response
 {
     public static function fromPsrResponse(Zubr\Request $request, ResponseInterface $psrResponse) : self
     {
-        $clientResponse = new static($request);
+        $clientResponse = new static($request->getServiceName(), $request->getOperationName());
         $responseBody = (string) $psrResponse->getBody();
         // TODO JSON
         $data = json_decode($responseBody);

@@ -20,7 +20,7 @@ class ResponseTest extends \PHPUnit\Framework\TestCase
     {
         parent::setUp();
         $this->request = new Zubr\Request('s', 'o', ['p' => null]);
-        $this->response = new Zubr\Response($this->request);
+        $this->response = new Zubr\Response('s', 'o');
     }
 
     public function tearDown() : void
@@ -30,11 +30,11 @@ class ResponseTest extends \PHPUnit\Framework\TestCase
         parent::tearDown();
     }
 
-    public function testGetter()
+    /*public function testGetter()
     {
         $this->response = new Zubr\Response($this->request);
         $this->assertEquals($this->request, $this->response->getRequest());
-    }
+    }*/
 
     public function testSetFaultOrResult()
     {

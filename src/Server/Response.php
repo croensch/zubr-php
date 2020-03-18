@@ -12,7 +12,7 @@ class Response extends Zubr\Response
         $data = [];
         $fault = $this->getFault();
         if ($fault === null) {
-            $operationName = $this->getRequest()->getOperationName();
+            $operationName = $this->getOperationName();
             $operationResponseKey = "${operationName}Response";
             $operationResultKey = "${operationName}Result";
             $data[$operationResponseKey][$operationResultKey] = $this->getResult();
